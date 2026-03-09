@@ -218,7 +218,7 @@ export const initialTopics = [
         "questions": [
             {
                 "id": 173,
-                "title": "Binary Search Tree Iterator",
+                "title": "Binary Tree Iterator",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/binary-search-tree-iterator/",
                 "solved": false,

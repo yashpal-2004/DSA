@@ -4,7 +4,7 @@ import { collection, getDocs, doc, updateDoc, setDoc, writeBatch } from 'firebas
 import { db } from './firebase';
 import { initialTopics } from './data/initialData';
 import { babbarTopics } from './data/babbarData';
-import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import GFGSheet from './components/GFGSheet';
 import TopicDetail from './components/TopicDetail';
@@ -13,6 +13,7 @@ import Roadmap from './components/Roadmap';
 import ErrorBoundary from './components/ErrorBoundary';
 import HomePage from './components/HomePage';
 import ActivityTracker from './components/ActivityTracker';
+import CommandPalette from './components/CommandPalette';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -243,18 +244,26 @@ function App() {
     <Router>
       <ErrorBoundary>
         <ScrollToTop />
-        <div style={{ minHeight: '100vh', background: 'var(--bg-dark)', color: 'var(--text-main)' }}>
-          <Navbar onSearch={setSearchTerm} searchMode={searchMode} setSearchMode={setSearchMode} />
-          <Routes>
-            <Route path="/" element={<HomePage topics={topics} searchTerm={searchTerm} searchMode={searchMode} onToggleSolved={handleToggleSolved} onToggleBookmark={handleToggleBookmark} onSaveComment={handleSaveComment} />} />
-            <Route path="/dashboard" element={<ErrorBoundary><Dashboard topics={topics.filter(t => !t.id.startsWith('babbar'))} searchTerm={searchTerm} searchMode={searchMode} onToggleSolved={handleToggleSolved} onToggleBookmark={handleToggleBookmark} onSaveComment={handleSaveComment} /></ErrorBoundary>} />
-            <Route path="/gfg" element={<ErrorBoundary><GFGSheet topics={topics.filter(t => t.id.startsWith('babbar'))} searchTerm={searchTerm} searchMode={searchMode} onToggleSolved={handleToggleSolved} onToggleBookmark={handleToggleBookmark} onSaveComment={handleSaveComment} /></ErrorBoundary>} />
-            <Route path="/topic/:id" element={<ErrorBoundary><TopicDetail topics={topics} onToggleSolved={handleToggleSolved} onToggleBookmark={handleToggleBookmark} onSaveComment={handleSaveComment} /></ErrorBoundary>} />
-            <Route path="/gfg/topic/:id" element={<ErrorBoundary><TopicDetail topics={topics} onToggleSolved={handleToggleSolved} onToggleBookmark={handleToggleBookmark} onSaveComment={handleSaveComment} isGfgOrigin={true} /></ErrorBoundary>} />
-            <Route path="/roadmap" element={<ErrorBoundary><Roadmap topics={topics} /></ErrorBoundary>} />
-            <Route path="/bookmarks" element={<ErrorBoundary><BookmarkPage topics={topics} onToggleBookmark={handleToggleBookmark} onToggleSolved={handleToggleSolved} onSaveComment={handleSaveComment} /></ErrorBoundary>} />
-            <Route path="/activity" element={<ErrorBoundary><ActivityTracker topics={topics} /></ErrorBoundary>} />
-          </Routes>
+        <div className="app-main-wrapper" style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-dark)', color: 'var(--text-main)' }}>
+          <Sidebar />
+          <CommandPalette
+            topics={topics}
+            onSearch={setSearchTerm}
+            searchMode={searchMode}
+            setSearchMode={setSearchMode}
+          />
+          <main style={{ flex: 1, marginLeft: '280px', minHeight: '100vh', padding: '1rem' }}>
+            <Routes>
+              <Route path="/" element={<HomePage topics={topics} searchTerm={searchTerm} searchMode={searchMode} onToggleSolved={handleToggleSolved} onToggleBookmark={handleToggleBookmark} onSaveComment={handleSaveComment} />} />
+              <Route path="/dashboard" element={<ErrorBoundary><Dashboard topics={topics.filter(t => !t.id.startsWith('babbar'))} searchTerm={searchTerm} searchMode={searchMode} onToggleSolved={handleToggleSolved} onToggleBookmark={handleToggleBookmark} onSaveComment={handleSaveComment} /></ErrorBoundary>} />
+              <Route path="/gfg" element={<ErrorBoundary><GFGSheet topics={topics.filter(t => t.id.startsWith('babbar'))} searchTerm={searchTerm} searchMode={searchMode} onToggleSolved={handleToggleSolved} onToggleBookmark={handleToggleBookmark} onSaveComment={handleSaveComment} /></ErrorBoundary>} />
+              <Route path="/topic/:id" element={<ErrorBoundary><TopicDetail topics={topics} onToggleSolved={handleToggleSolved} onToggleBookmark={handleToggleBookmark} onSaveComment={handleSaveComment} /></ErrorBoundary>} />
+              <Route path="/gfg/topic/:id" element={<ErrorBoundary><TopicDetail topics={topics} onToggleSolved={handleToggleSolved} onToggleBookmark={handleToggleBookmark} onSaveComment={handleSaveComment} isGfgOrigin={true} /></ErrorBoundary>} />
+              <Route path="/roadmap" element={<ErrorBoundary><Roadmap topics={topics} /></ErrorBoundary>} />
+              <Route path="/bookmarks" element={<ErrorBoundary><BookmarkPage topics={topics} onToggleBookmark={handleToggleBookmark} onToggleSolved={handleToggleSolved} onSaveComment={handleSaveComment} /></ErrorBoundary>} />
+              <Route path="/activity" element={<ErrorBoundary><ActivityTracker topics={topics} /></ErrorBoundary>} />
+            </Routes>
+          </main>
         </div>
       </ErrorBoundary>
     </Router>

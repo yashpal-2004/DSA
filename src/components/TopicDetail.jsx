@@ -1,16 +1,29 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { Search, ChevronLeft, ExternalLink, CheckCircle, Bookmark, Filter, MessageSquare, MessageCircle, X, Send, CalendarCheck2, ArrowUpDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const TopicDetail = ({ topics, onToggleSolved, onToggleBookmark, onSaveComment, isGfgOrigin }) => {
     const { id } = useParams();
+    const [searchParams] = useSearchParams();
     const topic = topics.find(t => t.id === id);
+
     const [searchTerm, setSearchTerm] = useState('');
+    const [searchMode, setSearchMode] = useState('id'); // 'id' | 'title'
     const [difficultyFilter, setDifficultyFilter] = useState('All');
     const [statusFilter, setStatusFilter] = useState('All');
     const [sortOrder, setSortOrder] = useState('default');
-    const [searchMode, setSearchMode] = useState('id'); // 'id' | 'title'
+
+    useEffect(() => {
+        const queryTerm = searchParams.get('q');
+        const queryMode = searchParams.get('m');
+        if (queryTerm) {
+            setSearchTerm(queryTerm);
+        }
+        if (queryMode === 'id' || queryMode === 'title') {
+            setSearchMode(queryMode);
+        }
+    }, [searchParams]);
 
     useEffect(() => {
         window.scrollTo(0, 0);

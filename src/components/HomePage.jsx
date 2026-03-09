@@ -89,22 +89,6 @@ const HomePage = ({ topics = [], searchTerm = '', searchMode, onToggleSolved, on
                     <h1 className="section-title" style={{ marginBottom: '0.25rem' }}>Overview</h1>
                     <p style={{ color: 'var(--text-muted)', fontWeight: 500 }}>Your complete DSA progress at a glance</p>
                 </div>
-                <motion.button
-                    whileHover={{ scale: 1.04 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => navigate('/dashboard')}
-                    style={{
-                        background: 'var(--primary)', color: 'white',
-                        border: 'none', borderRadius: '12px',
-                        padding: '0.75rem 1.5rem', fontWeight: 700,
-                        fontSize: '0.95rem', cursor: 'pointer',
-                        display: 'flex', alignItems: 'center', gap: '0.5rem',
-                        boxShadow: '0 8px 20px rgba(59,130,246,0.3)'
-                    }}
-                >
-                    <LayoutDashboard size={18} />
-                    Go to Dashboard
-                </motion.button>
             </motion.header>
 
             {/* Stats Row */}
