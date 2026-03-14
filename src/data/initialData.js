@@ -8,7 +8,7 @@ export const initialTopics = [
                 "title": "Palindrome Linked List",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/palindrome-linked-list/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -17,7 +17,7 @@ export const initialTopics = [
                 "title": "Intersection of Two Linked Lists",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/intersection-of-two-linked-lists/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -35,7 +35,7 @@ export const initialTopics = [
                 "title": "Middle of the Linked List",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/middle-of-the-linked-list/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -44,7 +44,7 @@ export const initialTopics = [
                 "title": "Linked List Cycle (Set approach)",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/linked-list-cycle/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Set"
             },
@@ -53,7 +53,7 @@ export const initialTopics = [
                 "title": "Merge Two Sorted Lists",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/merge-two-sorted-lists/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "LL"
             },
@@ -62,7 +62,7 @@ export const initialTopics = [
                 "title": "Remove Duplicates from Sorted List II",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "LL"
             },
@@ -71,7 +71,7 @@ export const initialTopics = [
                 "title": "Linked List Cycle II",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/linked-list-cycle-ii/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Floyd Cycle"
             },
@@ -80,7 +80,7 @@ export const initialTopics = [
                 "title": "Reverse Linked List",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/reverse-linked-list/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "LL"
             },
@@ -98,7 +98,7 @@ export const initialTopics = [
                 "title": "Remove Nth Node From End",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/remove-nth-node-from-end-of-list/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "LL"
             },
@@ -107,7 +107,7 @@ export const initialTopics = [
                 "title": "Add Two Numbers",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/add-two-numbers/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "LL"
             },
@@ -125,7 +125,7 @@ export const initialTopics = [
                 "title": "Rotate List",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/rotate-list/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "LL"
             },
@@ -143,7 +143,7 @@ export const initialTopics = [
                 "title": "Odd Even Linked List",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/odd-even-linked-list/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "LL"
             },
@@ -170,7 +170,7 @@ export const initialTopics = [
                 "title": "Design Linked List",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/design-linked-list/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Design"
             },
@@ -179,7 +179,7 @@ export const initialTopics = [
                 "title": "Convert Binary Number in a Linked List to Integer",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/convert-binary-number-in-a-linked-list-to-integer/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "LL"
             },
@@ -338,7 +338,7 @@ export const initialTopics = [
                 "title": "Binary Tree Inorder Traversal",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/binary-tree-inorder-traversal/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Tree"
             },
@@ -347,7 +347,7 @@ export const initialTopics = [
                 "title": "Binary Tree Preorder Traversal",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/binary-tree-preorder-traversal/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Tree"
             },
@@ -356,7 +356,7 @@ export const initialTopics = [
                 "title": "Binary Tree Postorder Traversal",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/binary-tree-postorder-traversal/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Tree"
             },
@@ -572,7 +572,7 @@ export const initialTopics = [
                 "title": "Binary Tree Right Side View",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/binary-tree-right-side-view/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "BFS/DFS"
             },
@@ -623,7 +623,7 @@ export const initialTopics = [
                 "title": "Count Negative Numbers in a Sorted Matrix",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/count-negative-numbers-in-a-sorted-matrix/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Binary Search"
             },
@@ -632,7 +632,7 @@ export const initialTopics = [
                 "title": "Matrix Cells in Distance Order",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/matrix-cells-in-distance-order/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Sorting"
             },
@@ -650,7 +650,7 @@ export const initialTopics = [
                 "title": "Kth Smallest Element in a Sorted Matrix",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Heap"
             },
@@ -659,7 +659,7 @@ export const initialTopics = [
                 "title": "The K Weakest Rows in a Matrix",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/the-k-weakest-rows-in-a-matrix/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Heap"
             },
@@ -713,7 +713,7 @@ export const initialTopics = [
                 "title": "Check if Every Row and Column Contains All Numbers",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/check-if-every-row-and-column-contains-all-numbers/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -722,7 +722,7 @@ export const initialTopics = [
                 "title": "Determine Whether Matrix Can Be Obtained By Rotation",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/determine-whether-matrix-can-be-obtained-by-rotation/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -731,7 +731,7 @@ export const initialTopics = [
                 "title": "Convert 1D Array Into 2D Array",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/convert-1d-array-into-2d-array/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -740,7 +740,7 @@ export const initialTopics = [
                 "title": "Rotate Image",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/rotate-image/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -785,7 +785,7 @@ export const initialTopics = [
                 "title": "Richest Customer Wealth",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/richest-customer-wealth/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -794,7 +794,7 @@ export const initialTopics = [
                 "title": "Matrix Diagonal Sum",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/matrix-diagonal-sum/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -803,7 +803,7 @@ export const initialTopics = [
                 "title": "Row With Maximum Ones",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/row-with-maximum-ones/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -812,7 +812,7 @@ export const initialTopics = [
                 "title": "Check if Grid Satisfies Conditions",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/check-if-grid-satisfies-conditions/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -821,7 +821,7 @@ export const initialTopics = [
                 "title": "Transpose Matrix",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/transpose-matrix/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -830,7 +830,7 @@ export const initialTopics = [
                 "title": "Reshape the Matrix",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/reshape-the-matrix/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -839,7 +839,7 @@ export const initialTopics = [
                 "title": "Check if Matrix Is X-Matrix",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/check-if-matrix-is-x-matrix/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -848,7 +848,7 @@ export const initialTopics = [
                 "title": "Modify the Matrix",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/modify-the-matrix/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -866,7 +866,7 @@ export const initialTopics = [
                 "title": "Special Positions in a Binary Matrix",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/special-positions-in-a-binary-matrix/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -875,7 +875,7 @@ export const initialTopics = [
                 "title": "Find Champion I",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/find-champion-i/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -893,7 +893,7 @@ export const initialTopics = [
                 "title": "Find the Width of Columns of a Grid",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/find-the-width-of-columns-of-a-grid/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -920,7 +920,7 @@ export const initialTopics = [
                 "title": "Matrix Similarity After Cyclic Shifts",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/matrix-similarity-after-cyclic-shifts/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Simulation"
             },
@@ -929,7 +929,7 @@ export const initialTopics = [
                 "title": "Prime In Diagonal",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/prime-in-diagonal/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -938,7 +938,7 @@ export const initialTopics = [
                 "title": "Lucky Numbers in a Matrix",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/lucky-numbers-in-a-matrix/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Matrix"
             },
@@ -1013,7 +1013,7 @@ export const initialTopics = [
                 "title": "Remove All Adjacent Duplicates In String",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Stack"
             },
@@ -1031,7 +1031,7 @@ export const initialTopics = [
                 "title": "Valid Parentheses",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/valid-parentheses/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Stack"
             },
@@ -1067,7 +1067,7 @@ export const initialTopics = [
                 "title": "Implement Stack using Queues",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/implement-stack-using-queues/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Design"
             },
@@ -1076,7 +1076,7 @@ export const initialTopics = [
                 "title": "Evaluate Reverse Polish Notation",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/evaluate-reverse-polish-notation/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Stack"
             },
@@ -1085,7 +1085,7 @@ export const initialTopics = [
                 "title": "Basic Calculator II",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/basic-calculator-ii/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Stack"
             },
@@ -1217,7 +1217,7 @@ export const initialTopics = [
                 "title": "Design Circular Queue",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/design-circular-queue/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Design"
             },
@@ -1235,7 +1235,7 @@ export const initialTopics = [
                 "title": "Find the Winner of the Circular Game",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/find-the-winner-of-the-circular-game/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Queue"
             },
@@ -1286,7 +1286,7 @@ export const initialTopics = [
                 "title": "Kth Largest Element (Heap vs Sort)",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/kth-largest-element-in-an-array/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Pivot"
             },
@@ -1682,7 +1682,7 @@ export const initialTopics = [
                 "title": "Network Delay Time",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/network-delay-time/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Dijkstra"
             },
@@ -1796,7 +1796,7 @@ export const initialTopics = [
                 "title": "Power of Two",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/power-of-two/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Bitwise"
             },
@@ -1850,7 +1850,7 @@ export const initialTopics = [
                 "title": "Divide Two Integers",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/divide-two-integers/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Bitwise"
             }
@@ -1865,7 +1865,7 @@ export const initialTopics = [
                 "title": "Find Target Indices After Sorting Array",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/find-target-indices-after-sorting-array/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Sorting/BS"
             },
@@ -1901,7 +1901,7 @@ export const initialTopics = [
                 "title": "Median of Two Sorted Arrays",
                 "difficulty": "Hard",
                 "leetcodeLink": "https://leetcode.com/problems/median-of-two-sorted-arrays/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Binary Search"
             },
@@ -1910,7 +1910,7 @@ export const initialTopics = [
                 "title": "Binary Search (O(log n))",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/binary-search/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Analysis"
             },
@@ -1919,7 +1919,7 @@ export const initialTopics = [
                 "title": "Search Insert Position",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/search-insert-position/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Binary Search"
             },
@@ -1937,7 +1937,7 @@ export const initialTopics = [
                 "title": "Maximum Count of Positive Integer and Negative Integer",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/maximum-count-of-positive-integer-and-negative-integer/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Binary Search"
             },
@@ -1955,7 +1955,7 @@ export const initialTopics = [
                 "title": "Guess Number Higher or Lower",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/guess-number-higher-or-lower/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Binary Search"
             },
@@ -1982,7 +1982,7 @@ export const initialTopics = [
                 "title": "Sqrt(x)",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/sqrtx/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Binary Search"
             },
@@ -2000,7 +2000,7 @@ export const initialTopics = [
                 "title": "Special Array With X Elements Greater Than or Equal X",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/special-array-with-x-elements-greater-than-or-equal-x/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Binary Search"
             },
@@ -2081,7 +2081,7 @@ export const initialTopics = [
                 "title": "Single Element in a Sorted Array",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/single-element-in-a-sorted-array/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Binary Search"
             },
@@ -2144,7 +2144,7 @@ export const initialTopics = [
                 "title": "Find First and Last Position of Element in Sorted Array",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Binary Search"
             },
@@ -2231,7 +2231,7 @@ export const initialTopics = [
                 "title": "Reverse String",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/reverse-string/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2267,7 +2267,7 @@ export const initialTopics = [
                 "title": "Reverse String II",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/reverse-string-ii/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2276,7 +2276,7 @@ export const initialTopics = [
                 "title": "3Sum",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/3sum/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2285,7 +2285,7 @@ export const initialTopics = [
                 "title": "3Sum Closest",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/3sum-closest/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2294,7 +2294,7 @@ export const initialTopics = [
                 "title": "4Sum",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/4sum/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2312,7 +2312,7 @@ export const initialTopics = [
                 "title": "Remove Duplicates from Sorted Array",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/remove-duplicates-from-sorted-array/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2330,7 +2330,7 @@ export const initialTopics = [
                 "title": "Sort Colors (Dutch National Flag)",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/sort-colors/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2366,7 +2366,7 @@ export const initialTopics = [
                 "title": "Remove Element",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/remove-element/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2375,7 +2375,7 @@ export const initialTopics = [
                 "title": "Merge Sorted Array",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/merge-sorted-array/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2384,7 +2384,7 @@ export const initialTopics = [
                 "title": "Sort Array By Parity",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/sort-array-by-parity/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2393,7 +2393,7 @@ export const initialTopics = [
                 "title": "Minimum Size Subarray Sum",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/minimum-size-subarray-sum/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2411,7 +2411,7 @@ export const initialTopics = [
                 "title": "Reverse Prefix of Word",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/reverse-prefix-of-word/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2420,7 +2420,7 @@ export const initialTopics = [
                 "title": "Flipping an Image",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/flipping-an-image/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2429,7 +2429,7 @@ export const initialTopics = [
                 "title": "Duplicate Zeros",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/duplicate-zeros/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2438,7 +2438,7 @@ export const initialTopics = [
                 "title": "Minimum Average of Smallest and Largest Elements",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/minimum-average-of-smallest-and-largest-elements/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2483,7 +2483,7 @@ export const initialTopics = [
                 "title": "Remove Duplicates from Sorted List",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/remove-duplicates-from-sorted-list/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Two Pointer"
             },
@@ -2603,7 +2603,7 @@ export const initialTopics = [
                 "title": "Find Pivot Index",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/find-pivot-index/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Prefix Sum"
             },
@@ -2621,7 +2621,7 @@ export const initialTopics = [
                 "title": "Range Sum Query - Immutable",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/range-sum-query-immutable/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Prefix Sum"
             },
@@ -2639,7 +2639,7 @@ export const initialTopics = [
                 "title": "Left and Right Sum Differences",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/left-and-right-sum-differences/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Prefix Sum"
             },
@@ -2849,7 +2849,7 @@ export const initialTopics = [
                 "title": "Pow(x, n) (O(log n))",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/powx-n/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Recursion"
             },
@@ -2858,7 +2858,7 @@ export const initialTopics = [
                 "title": "Fibonacci Number",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/fibonacci-number/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Recursion"
             },
@@ -2867,7 +2867,7 @@ export const initialTopics = [
                 "title": "Count Good Numbers",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/count-good-numbers/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Recursion"
             },
@@ -2876,7 +2876,7 @@ export const initialTopics = [
                 "title": "Elimination Game",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/elimination-game/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Recursion"
             },
@@ -2945,7 +2945,7 @@ export const initialTopics = [
                 "title": "Distinct Subsequences",
                 "difficulty": "Hard",
                 "leetcodeLink": "https://leetcode.com/problems/distinct-subsequences/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "DP"
             },
@@ -2981,7 +2981,7 @@ export const initialTopics = [
                 "title": "Longest Common Subsequence",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/longest-common-subsequence/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "DP"
             },
@@ -3008,7 +3008,7 @@ export const initialTopics = [
                 "title": "Best Time to Buy and Sell Stock III",
                 "difficulty": "Hard",
                 "leetcodeLink": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "DP"
             },
@@ -3017,7 +3017,7 @@ export const initialTopics = [
                 "title": "Best Time to Buy and Sell Stock IV",
                 "difficulty": "Hard",
                 "leetcodeLink": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "DP"
             },
@@ -3053,7 +3053,7 @@ export const initialTopics = [
                 "title": "Minimum Insertion Steps to Make String Palindrome",
                 "difficulty": "Hard",
                 "leetcodeLink": "https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "DP"
             },
@@ -3107,7 +3107,7 @@ export const initialTopics = [
                 "title": "Climbing Stairs (Time vs Space)",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/climbing-stairs/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "DP"
             },
@@ -3116,7 +3116,7 @@ export const initialTopics = [
                 "title": "House Robber",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/house-robber/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "DP"
             },
@@ -3275,7 +3275,7 @@ export const initialTopics = [
                 "title": "Best Time to Buy and Sell Stock II",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Greedy"
             },
@@ -3407,7 +3407,7 @@ export const initialTopics = [
                 "title": "Sort an Array (O(n log n))",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/sort-an-array/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Divide and Conquer"
             },
@@ -3416,7 +3416,7 @@ export const initialTopics = [
                 "title": "Squares of a Sorted Array",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/squares-of-a-sorted-array/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Sorting"
             },
@@ -3461,7 +3461,7 @@ export const initialTopics = [
                 "title": "Sort Characters By Frequency",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/sort-characters-by-frequency/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Sort/Hash"
             },
@@ -3479,7 +3479,7 @@ export const initialTopics = [
                 "title": "Merge Sort (Sort List)",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/sort-list/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Merge Sort"
             },
@@ -3488,7 +3488,7 @@ export const initialTopics = [
                 "title": "H-Index",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/h-index/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Sorting"
             },
@@ -3506,7 +3506,7 @@ export const initialTopics = [
                 "title": "Maximum Gap (Bucket Sort Idea)",
                 "difficulty": "Hard",
                 "leetcodeLink": "https://leetcode.com/problems/maximum-gap/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Bucket Sort"
             },
@@ -3575,7 +3575,7 @@ export const initialTopics = [
                 "title": "First Unique Character in a String",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/first-unique-character-in-a-string/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Hash Table"
             },
@@ -3647,7 +3647,7 @@ export const initialTopics = [
                 "title": "Find the Index of the First Occurrence in a String",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "String Matching"
             },
@@ -3656,7 +3656,7 @@ export const initialTopics = [
                 "title": "Multiply Strings",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/multiply-strings/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Math"
             },
@@ -3665,7 +3665,7 @@ export const initialTopics = [
                 "title": "Integer to Roman",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/integer-to-roman/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "String"
             },
@@ -3683,7 +3683,7 @@ export const initialTopics = [
                 "title": "String to Integer (atoi)",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/string-to-integer-atoi/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Simulation"
             },
@@ -3692,7 +3692,7 @@ export const initialTopics = [
                 "title": "Rotate String",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/rotate-string/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "String"
             },
@@ -3743,7 +3743,7 @@ export const initialTopics = [
                 "title": "Intersection of Two Arrays II",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/intersection-of-two-arrays-ii/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Hash Table"
             },
@@ -3752,7 +3752,7 @@ export const initialTopics = [
                 "title": "Intersection of Two Arrays",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/intersection-of-two-arrays/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Set"
             },
@@ -3761,7 +3761,7 @@ export const initialTopics = [
                 "title": "Best Time to Buy and Sell Stock",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Array"
             },
@@ -3770,7 +3770,7 @@ export const initialTopics = [
                 "title": "Find All Duplicates in an Array",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/find-all-duplicates-in-an-array/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Array"
             },
@@ -3779,7 +3779,7 @@ export const initialTopics = [
                 "title": "Product of Array Except Self",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/product-of-array-except-self/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Prefix Product"
             },
@@ -3788,7 +3788,7 @@ export const initialTopics = [
                 "title": "Rotate Array",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/rotate-array/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Array"
             },
@@ -3806,7 +3806,7 @@ export const initialTopics = [
                 "title": "Majority Element",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/majority-element/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Voting Algorithm"
             },
@@ -3833,7 +3833,7 @@ export const initialTopics = [
                 "title": "Plus One",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/plus-one/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Math"
             },
@@ -3842,7 +3842,7 @@ export const initialTopics = [
                 "title": "Roman to Integer",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/roman-to-integer/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Math"
             },
@@ -3851,7 +3851,7 @@ export const initialTopics = [
                 "title": "Count and Say",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/count-and-say/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Simulation"
             },
@@ -3878,7 +3878,7 @@ export const initialTopics = [
                 "title": "Find the Duplicate Number (TP Approach)",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/find-the-duplicate-number/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Cycle Detection"
             },
@@ -3887,7 +3887,7 @@ export const initialTopics = [
                 "title": "Delete Greatest Value in Each Row",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/delete-greatest-value-in-each-row/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Simulation"
             },
@@ -3896,7 +3896,7 @@ export const initialTopics = [
                 "title": "Find Missing and Repeated Values",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/find-missing-and-repeated-values/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Math"
             },
@@ -3905,7 +3905,7 @@ export const initialTopics = [
                 "title": "Find Winner on a Tic Tac Toe Game",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/find-winner-on-a-tic-tac-toe-game/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Simulation"
             },
@@ -3941,7 +3941,7 @@ export const initialTopics = [
                 "title": "Perfect Number",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/perfect-number/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Math"
             },
@@ -3995,7 +3995,7 @@ export const initialTopics = [
                 "title": "Ugly Number",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/ugly-number/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Math"
             }
@@ -4010,7 +4010,7 @@ export const initialTopics = [
                 "title": "Two Sum",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/two-sum/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Hash Table"
             },
@@ -4019,7 +4019,7 @@ export const initialTopics = [
                 "title": "Contains Duplicate",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/contains-duplicate/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Hash Table"
             },
@@ -4037,7 +4037,7 @@ export const initialTopics = [
                 "title": "Top K Frequent Elements",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/top-k-frequent-elements/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Hash Table"
             },
@@ -4097,7 +4097,7 @@ export const initialTopics = [
                 "title": "Jewels and Stones",
                 "difficulty": "Easy",
                 "leetcodeLink": "https://leetcode.com/problems/jewels-and-stones/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Set"
             },
@@ -4139,7 +4139,7 @@ export const initialTopics = [
                 "title": "Factorial Trailing Zeroes",
                 "difficulty": "Medium",
                 "leetcodeLink": "https://leetcode.com/problems/factorial-trailing-zeroes/",
-                "solved": false,
+                "solved": true,
                 "bookmarked": false,
                 "tag": "Math"
             },

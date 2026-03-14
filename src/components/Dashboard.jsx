@@ -3,8 +3,7 @@ import { Target, Trophy, Clock, Search, ExternalLink, CheckCircle, Bookmark, Mes
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
-    Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
-    PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip
+    BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip as RechartsTooltip, Cell
 } from 'recharts';
 import TopicCard from './TopicCard';
 
@@ -54,20 +53,25 @@ const Dashboard = ({ topics, searchTerm, searchMode, onToggleSolved, onToggleBoo
 
 
 
-    // Data for Radar Chart (Topic Mastery)
-    const radarData = useMemo(() => {
+    // Data for Mastery Chart (Topical Progress)
+    const masteryData = useMemo(() => {
         return topics
-            .filter(t => t.questions.length > 0)
+            .filter(t => t.questions.length > 0 && !t.id.startsWith('babbar') && t.id !== 'leetcode-top-150-plus')
             .map(t => {
                 const solved = t.questions.filter(q => q.solved).length;
+                const percentage = Math.round((solved / t.questions.length) * 100);
                 return {
-                    subject: t.topicName.length > 10 ? t.topicName.substring(0, 8) + '..' : t.topicName,
-                    fullName: t.topicName,
-                    A: Math.round((solved / t.questions.length) * 100),
-                    fullMark: 100
+                    name: t.topicName,
+                    progress: percentage,
+                    solved,
+                    total: t.questions.length
                 };
             })
-            .slice(0, 8); // Just show top 8 for clarity
+            .sort((a, b) => b.progress - a.progress) // Sort by highest progress
+            .map((item, index) => ({
+                ...item,
+                displayName: `${index + 1}. ${item.name}`
+            }));
     }, [topics]);
 
     // Data for Pie Chart (Difficulty Distribution)
@@ -175,114 +179,62 @@ const Dashboard = ({ topics, searchTerm, searchMode, onToggleSolved, onToggleBoo
                     </div>
                 </div>
 
-                {/* Radar Chart Tile (Large 2x2) */}
+                {/* Mastery Chart Tile (Large 2x2) */}
                 <div className="glass-card" style={{ gridColumn: 'span 2', gridRow: 'span 2', padding: '2rem', display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', marginBottom: '1.5rem' }}>Skill Mastery Radar</div>
-                    <div style={{ flex: 1, minHeight: 0 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase' }}>Topic Mastery Breakdown</div>
+                        <div style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--primary)', background: '#eff6ff', padding: '2px 8px', borderRadius: '4px' }}>Top Performing First</div>
+                    </div>
+                    <div style={{ flex: 1, minHeight: 0, marginLeft: '-20px' }}>
                         <ResponsiveContainer width="100%" height="100%">
-                            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
-                                <PolarGrid stroke="#e2e8f0" />
-                                <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 10, fontWeight: 700 }} />
-                                <Radar
-                                    name="Progress"
-                                    dataKey="A"
-                                    stroke="var(--primary)"
-                                    fill="var(--primary)"
-                                    fillOpacity={0.5}
+                            <BarChart
+                                layout="vertical"
+                                data={masteryData}
+                                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                                barSize={12}
+                            >
+                                <XAxis type="number" hide domain={[0, 100]} />
+                                <YAxis 
+                                    dataKey="displayName" 
+                                    type="category" 
+                                    width={140}
+                                    tick={{ fill: '#64748b', fontSize: 10, fontWeight: 700 }}
+                                    axisLine={false}
+                                    tickLine={false}
                                 />
-                                <RechartsTooltip />
-                            </RadarChart>
+                                <RechartsTooltip 
+                                    cursor={{ fill: '#f8fafc' }}
+                                    content={({ active, payload }) => {
+                                        if (active && payload && payload.length) {
+                                            const data = payload[0].payload;
+                                            return (
+                                                <div style={{ background: 'white', padding: '0.75rem', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}>
+                                                    <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '4px' }}>{data.name}</div>
+                                                    <div style={{ fontSize: '1.1rem', fontWeight: 900, color: 'var(--primary)' }}>{data.progress}%</div>
+                                                    <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 600 }}>{data.solved} of {data.total} Solved</div>
+                                                </div>
+                                            );
+                                        }
+                                        return null;
+                                    }}
+                                />
+                                <Bar 
+                                    dataKey="progress" 
+                                    background={{ fill: '#f1f5f9', radius: 10 }}
+                                    radius={[0, 10, 10, 0]}
+                                >
+                                    {masteryData.map((entry, index) => (
+                                        <Cell 
+                                            key={`cell-${index}`} 
+                                            fill={entry.progress > 75 ? '#10b981' : entry.progress > 40 ? 'var(--primary)' : '#94a3b8'} 
+                                        />
+                                    ))}
+                                </Bar>
+                            </BarChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
             </div>
-            {/* Study Plan Section */}
-            {(() => {
-                const remainingQuestions = totalQuestions - totalSolved;
-                const completionDate = new Date();
-                completionDate.setDate(completionDate.getDate() + remainingQuestions);
-                const formattedDate = completionDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-                const progressPercent = Math.round((totalSolved / totalQuestions) * 100) || 0;
-
-                return (
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="glass-card"
-                        style={{
-                            padding: '2rem',
-                            marginBottom: '3rem',
-                            background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-                            border: '1px solid #e2e8f0',
-                            position: 'relative',
-                            overflow: 'hidden'
-                        }}
-                    >
-                        <div style={{ position: 'absolute', right: '-30px', top: '-30px', opacity: 0.03, transform: 'rotate(15deg)' }}>
-                            <Calendar size={240} />
-                        </div>
-
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '2rem', position: 'relative', zIndex: 1 }}>
-                            <div style={{ flex: '1 1 300px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-                                    <div style={{ padding: '8px', background: 'var(--primary)', color: 'white', borderRadius: '10px' }}>
-                                        <TrendingUp size={20} />
-                                    </div>
-                                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>Flexible Study Plan</h2>
-                                </div>
-                                <p style={{ color: '#64748b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1.5rem', maxWidth: '500px' }}>
-                                    Targeting <strong>1 question per day</strong> baseline. You have <strong>{remainingQuestions}</strong> questions remaining out of <strong>{totalQuestions}</strong>, with an estimated completion by <strong>{formattedDate}</strong>.
-                                </p>
-
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
-                                    <div style={{ padding: '1rem', background: '#f1f5f9', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-                                        <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>Daily Goal</div>
-                                        <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                            1 Question <Zap size={16} color="#f59e0b" fill="#f59e0b" />
-                                        </div>
-                                    </div>
-                                    <div style={{ padding: '1rem', background: '#f1f5f9', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-                                        <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>Monthly Target</div>
-                                        <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-main)' }}>30 Questions</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div style={{ flex: '1 1 400px', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                                <div style={{ background: '#f8fafc', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-                                        <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1e293b' }}>Course Completion Progress</span>
-                                        <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--primary)' }}>{progressPercent}%</span>
-                                    </div>
-                                    <div style={{ width: '100%', height: '8px', background: '#e2e8f0', borderRadius: '4px', overflow: 'hidden' }}>
-                                        <div style={{ width: `${progressPercent}%`, height: '100%', background: 'var(--primary)', borderRadius: '4px' }} />
-                                    </div>
-                                    <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#64748b', fontSize: '0.8rem', fontWeight: 600 }}>
-                                        <Flag size={14} /> Total Progress: {totalSolved} / {totalQuestions}
-                                    </div>
-                                </div>
-
-                                <div style={{ display: 'flex', gap: '1rem' }}>
-                                    <div style={{ flex: 1, padding: '1rem', background: '#f0f9ff', borderRadius: '12px', border: '1px dotted #bae6fd', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                        <Calendar size={18} color="#0369a1" />
-                                        <div>
-                                            <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#0369a1', textTransform: 'uppercase' }}>Days Left</div>
-                                            <div style={{ fontSize: '1rem', fontWeight: 800, color: '#0c4a6e' }}>{remainingQuestions} Days</div>
-                                        </div>
-                                    </div>
-                                    <div style={{ flex: 1, padding: '1rem', background: '#f0fdf4', borderRadius: '12px', border: '1px dotted #bbf7d0', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                        <CheckCircle size={18} color="#15803d" />
-                                        <div>
-                                            <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#15803d', textTransform: 'uppercase' }}>Status</div>
-                                            <div style={{ fontSize: '1rem', fontWeight: 800, color: '#064e3b' }}>{totalSolved > 0 ? "Ahead of Plan" : "Level 1 Start"}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-                );
-            })()}
 
 
             {/* Quick Difficulty Stats (Compact) */}
