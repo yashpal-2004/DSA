@@ -8,7 +8,7 @@
   --text-main: #1e293b;
   --text-muted: #64748b;
   --easy: #10b981;
-  --medium: #3b82f6;
+  --medium: #f59e0b;
   --hard: #ef4444;
   --border: #e2e8f0;
   --glass: rgba(255, 255, 255, 0.7);
@@ -107,9 +107,9 @@ body {
 }
 
 .badge-medium {
-  background: #eff6ff;
-  color: #3b82f6;
-  border: 1px solid #dbeafe;
+  background: #fffbeb;
+  color: #f59e0b;
+  border: 1px solid #fef3c7;
 }
 
 .badge-hard {

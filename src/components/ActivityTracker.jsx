@@ -6,19 +6,28 @@ import {
 } from 'recharts';
 import { submissionData } from '../data/submissions';
 
+const getLogicalDateStr = (dateInput) => {
+    const d = new Date(dateInput);
+    // Correctly handle the 5 AM logical day start using local time
+    d.setHours(d.getHours() - 5);
+    
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
+};
+
 const ActivityTracker = ({ topics }) => {
     // Streak renews at 5 AM
-    const FIVE_AM_OFFSET_MS = 5 * 60 * 60 * 1000;
+
 
     const initialTopics = useMemo(() => {
         // Only include original 464 questions for the stats breakdown
         return topics.filter(t => !t.id.startsWith('babbar') && t.id !== 'leetcode-top-150-plus');
     }, [topics]);
 
-    const getLogicalDateStr = (dateInput) => {
-        const d = new Date(dateInput);
-        return new Date(d.getTime() - FIVE_AM_OFFSET_MS).toISOString().split('T')[0];
-    };
+
 
     // 1. Extract all solved questions with logical dates from ALL TOPICS (dynamic updates)
     const activityFromTopics = useMemo(() => {
@@ -41,7 +50,7 @@ const ActivityTracker = ({ topics }) => {
     }, [topics]);
 
     // 2. Combine with submissionData
-    const allActivity = useMemo(() => {
+    const dailyActivity = useMemo(() => {
         const combined = [];
         const processedIds = new Set();
 
@@ -92,18 +101,18 @@ const ActivityTracker = ({ topics }) => {
         for (let i = 0; i < 365; i++) {
             const d = new Date();
             d.setDate(today.getDate() - i);
-            const dateStr = d.toISOString().split('T')[0];
+            const dateStr = getLogicalDateStr(d);
             data[dateStr] = 0;
         }
 
-        allActivity.forEach(day => {
+        dailyActivity.forEach(day => {
             if (data[day.date] !== undefined) {
                 data[day.date] = day.questions.length;
             }
         });
 
         return data;
-    }, [allActivity]);
+    }, [dailyActivity]);
 
     // Dynamic Stats for the 464 questions circle card
     const stats = useMemo(() => {
@@ -127,42 +136,85 @@ const ActivityTracker = ({ topics }) => {
         oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
         const oneYearAgoStr = oneYearAgo.toISOString().split('T')[0];
 
-        const lastYearActivity = allActivity.filter(day => day.date >= oneYearAgoStr);
-        // Count unique questions solved in the past year
-        const totalSubmissions = lastYearActivity.reduce((acc, day) => acc + day.questions.length, 0);
-        const activeDaysCount = lastYearActivity.length;
+        // Use dailyActivity (grouped by day) instead of flat allActivity
+        const lastYearDaily = dailyActivity.filter(day => day.date >= oneYearAgoStr);
+        
+        const totalSubmissions = lastYearDaily.reduce((acc, day) => acc + day.questions.length, 0);
+        const activeDaysCount = lastYearDaily.length;
 
-        // Calculate Max Streak
-        // Sort all activity by date ascending
-        const sortedDates = allActivity.map(day => day.date).sort();
-        let currentStreak = 0;
+        // Create data map for all activity
+        const dataMap = {};
+        dailyActivity.forEach(day => dataMap[day.date] = day.questions.length);
+
+        const sortedDates = dailyActivity.map(day => day.date).sort();
+        if (sortedDates.length === 0) return { totalSubmissions: 0, activeDaysCount: 0, maxStreak: 0, expectedMaxStreak: 0, currentStreak: 0 };
+
+        // Calculate Real and Expected Streaks
+        let tempStreak = 0;
         let maxStreak = 0;
-        let lastDate = null;
+        let expectedTempStreak = 0;
+        let expectedMaxStreak = 0;
 
-        sortedDates.forEach(dateStr => {
-            const currentDate = new Date(dateStr);
-            if (lastDate) {
-                const diffTime = Math.abs(currentDate - lastDate);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                
-                if (diffDays === 1) {
-                    currentStreak++;
-                } else {
-                    currentStreak = 1;
-                }
+        const firstDate = new Date(sortedDates[0]);
+        const dayIter = new Date(firstDate);
+        const logicalToday = getLogicalDateStr(new Date());
+
+        while (getLogicalDateStr(dayIter) <= logicalToday) {
+            const dateStr = getLogicalDateStr(dayIter);
+            const count = dataMap[dateStr] || 0;
+
+            // Check if this is a "red day" (streak interruption)
+            const p1 = getLogicalDateStr(new Date(dayIter.getTime() - 24 * 60 * 60 * 1000));
+            const n1 = getLogicalDateStr(new Date(dayIter.getTime() + 24 * 60 * 60 * 1000));
+            const isRed = count === 0 && (dataMap[p1] > 0) && (dataMap[n1] > 0);
+
+            if (count > 0) {
+                tempStreak++;
+                expectedTempStreak++;
+            } else if (isRed) {
+                tempStreak = 0;
+                expectedTempStreak++; // Include red day in expected streak
             } else {
-                currentStreak = 1;
+                tempStreak = 0;
+                expectedTempStreak = 0;
             }
-            maxStreak = Math.max(maxStreak, currentStreak);
-            lastDate = currentDate;
-        });
+
+            maxStreak = Math.max(maxStreak, tempStreak);
+            expectedMaxStreak = Math.max(expectedMaxStreak, expectedTempStreak);
+            dayIter.setDate(dayIter.getDate() + 1);
+        }
+
+        // Calculate Current Streak (Regular)
+        const activityMap = new Set(dailyActivity.map(day => day.date));
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const logicalYesterday = getLogicalDateStr(yesterday);
+        
+        let currentStreak = 0;
+        let checkDate = null;
+
+        if (activityMap.has(logicalToday)) {
+            checkDate = new Date();
+        } else if (activityMap.has(logicalYesterday)) {
+            checkDate = yesterday;
+        }
+
+        if (checkDate) {
+            const iterDate = new Date(checkDate);
+            while (activityMap.has(getLogicalDateStr(iterDate))) {
+                currentStreak++;
+                iterDate.setDate(iterDate.getDate() - 1);
+            }
+        }
 
         return {
             totalSubmissions,
             activeDaysCount,
-            maxStreak
+            maxStreak,
+            expectedMaxStreak,
+            currentStreak
         };
-    }, [allActivity]);
+    }, [dailyActivity]);
 
     const pieProgressData = [
         { name: 'Solved', value: stats.solved, color: '#f59e0b' },
@@ -228,7 +280,9 @@ const ActivityTracker = ({ topics }) => {
                     <div style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-main)' }}>{activityStats.totalSubmissions} <span style={{ color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.9rem' }}>submissions in the past one year</span></div>
                     <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)' }}>
                         <span>Total active days: {activityStats.activeDaysCount}</span>
+                        <span style={{ color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Flame size={14} fill="#f59e0b" /> Current: {activityStats.currentStreak}</span>
                         <span>Max streak: {activityStats.maxStreak}</span>
+                        <span style={{ color: '#f87171' }}>Expected max: {activityStats.expectedMaxStreak}</span>
                     </div>
                 </div>
                 
@@ -248,14 +302,14 @@ const ActivityTracker = ({ topics }) => {
             <div style={{ position: 'relative', paddingLeft: '2rem' }}>
                 <div style={{ position: 'absolute', left: '7px', top: '10px', bottom: '0', width: '2px', background: 'linear-gradient(to bottom, var(--primary), var(--bg-dark) 80%)', borderRadius: '4px' }}></div>
 
-                {allActivity.length === 0 ? (
+                {dailyActivity.length === 0 ? (
                     <div className="glass-card" style={{ padding: '4rem 2rem', textAlign: 'center' }}>
                         <History size={60} style={{ opacity: 0.1, marginBottom: '1.5rem' }} />
                         <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)' }}>No Activity Yet</h3>
                         <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>Solve your first question to start the timeline!</p>
                     </div>
                 ) : (
-                    allActivity.map((day, idx) => (
+                    dailyActivity.map((day, idx) => (
                         <TimelineDay key={day.date} day={day} idx={idx} />
                     ))
                 )}
@@ -271,12 +325,13 @@ const DifficultyRow = ({ label, solved, total, color }) => (
     </div>
 );
 
-const getHeatColor = (count) => {
-    if (count === 0) return '#f1f5f9';
-    if (count === 1) return '#dcfce7'; 
-    if (count === 2) return '#86efac';
-    if (count === 3) return '#22c55e';
-    return '#10b981';
+const getHeatColor = (count, isBreak) => {
+    if (isBreak) return '#fca5a5'; // More visible red for streak break
+    if (count === 0) return '#f8fafc';
+    if (count <= 1) return '#86efac'; 
+    if (count <= 3) return '#22c55e';
+    if (count <= 5) return '#16a34a';
+    return '#15803d';
 };
 
 const SubmissionHeatmap = ({ data }) => {
@@ -289,14 +344,40 @@ const SubmissionHeatmap = ({ data }) => {
     startDate.setDate(today.getDate() - (52 * 7 + today.getDay())); 
 
     const dayIterator = new Date(startDate);
+    const logicalToday = getLogicalDateStr(new Date());
+
+    // Calculate initial streak from before the visible range
+    const initialPrevDate = new Date(startDate);
+    initialPrevDate.setDate(initialPrevDate.getDate() - 1);
+    let streakCount = 0;
+    // We'd need to look back multiple days to be perfect, but 2 is enough for lookback
+    const p1 = data[getLogicalDateStr(initialPrevDate)] || 0;
+    const p2Date = new Date(initialPrevDate); p2Date.setDate(p2Date.getDate() - 1);
+    const p2 = data[getLogicalDateStr(p2Date)] || 0;
+    if (p1 > 0) streakCount = (p2 > 0) ? 2 : 1;
     
     for (let i = 0; i < 53 * 7; i++) {
-        const dateStr = dayIterator.toISOString().split('T')[0];
+        const dateStr = getLogicalDateStr(dayIterator);
         const count = data[dateStr] || 0;
-        currentWeek.push({ date: dateStr, count, day: dayIterator.getDay() });
+        
+        // Look ahead for "1-day gap" detection
+        const nextDate = new Date(dayIterator.getTime() + 24 * 60 * 60 * 1000);
+        const nextCount = data[getLogicalDateStr(nextDate)] || 0;
+        
+        const isPast = (dateStr < logicalToday);
+        // Any 1-day gap (next day has activity) should be red
+        const isBreak = count === 0 && streakCount >= 1 && nextCount > 0 && isPast;
+
+        currentWeek.push({ date: dateStr, count, day: dayIterator.getDay(), isBreak });
         if (currentWeek.length === 7) {
             weeks.push(currentWeek);
             currentWeek = [];
+        }
+
+        if (count > 0) {
+            streakCount++;
+        } else {
+            streakCount = 0;
         }
         dayIterator.setDate(dayIterator.getDate() + 1);
     }
@@ -334,11 +415,11 @@ const SubmissionHeatmap = ({ data }) => {
                                         style={{ 
                                             width: '10px', 
                                             height: '10px', 
-                                            background: getHeatColor(day.count), 
+                                            background: getHeatColor(day.count, day.isBreak), 
                                             borderRadius: '2px',
-                                            border: day.count === 0 ? '1px solid #e2e8f0' : 'none'
+                                            border: (day.count === 0 && !day.isBreak) ? '1px solid #e2e8f0' : 'none'
                                         }}
-                                        title={`${day.date}: ${day.count} submissions`}
+                                        title={`${day.date}: ${day.count} submissions ${day.isBreak ? '(Streak Break)' : ''}`}
                                     />
                                 ))}
                             </div>
@@ -397,7 +478,7 @@ const TimelineDay = ({ day, idx }) => (
                             </div>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
-                           <span className={`badge badge-${(q.difficulty || 'Easy').toLowerCase().replace('.','').replace('med','medium')}`} style={{ fontSize: '0.65rem' }}>{q.difficulty || 'Easy'}</span>
+                           <span className={`badge badge-${(q.difficulty || 'Easy').toLowerCase().includes('med') ? 'medium' : (q.difficulty || 'Easy').toLowerCase()}`} style={{ fontSize: '0.65rem' }}>{q.difficulty || 'Easy'}</span>
                         </div>
                     </motion.div>
                 ))}
