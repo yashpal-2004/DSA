@@ -22,13 +22,13 @@ import {
 const Sidebar = ({ zoomLevel, setZoomLevel }) => {
     const navItems = [
         { to: "/", icon: <Home size={22} />, label: "Home" },
+        { to: "/a2z-dsa", icon: <BookOpen size={22} />, label: "A2Z DSA" },
         { to: "/dashboard", icon: <LayoutDashboard size={22} />, label: "Dashboard" },
         { to: "/activity", icon: <Flame size={22} />, label: "Activity" },
         { to: "/roadmap", icon: <Milestone size={22} />, label: "Roadmap" },
         { to: "/plan", icon: <TrendingUp size={22} />, label: "Study Plan" },
         { to: "/leetcode", icon: <List size={22} />, label: "LeetCode Sheet" },
         { to: "/hot150", icon: <Zap size={22} />, label: "Hot 150+" },
-        { to: "/a2z-dsa", icon: <BookOpen size={22} />, label: "A2Z DSA" },
         { to: "/gfg", icon: <Trophy size={22} />, label: "Love Babbar" },
         { to: "/bookmarks", icon: <Bookmark size={22} />, label: "Bookmarks" },
     ];
