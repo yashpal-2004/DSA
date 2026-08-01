@@ -17,6 +17,13 @@ const getLogicalDateStr = (dateInput) => {
     
     return `${year}-${month}-${day}`;
 };
+const getLiteralDateStr = (dateInput) => {
+    const d = new Date(dateInput);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
 
 const ActivityTracker = ({ topics }) => {
     // Streak renews at 5 AM
@@ -349,18 +356,18 @@ const SubmissionHeatmap = ({ data }) => {
     const initialPrevDate = new Date(startDate);
     initialPrevDate.setDate(initialPrevDate.getDate() - 1);
     let streakCount = 0;
-    const p1 = data[getLogicalDateStr(initialPrevDate)] || 0;
+    const p1 = data[getLiteralDateStr(initialPrevDate)] || 0;
     const p2Date = new Date(initialPrevDate); p2Date.setDate(p2Date.getDate() - 1);
-    const p2 = data[getLogicalDateStr(p2Date)] || 0;
+    const p2 = data[getLiteralDateStr(p2Date)] || 0;
     if (p1 > 0) streakCount = (p2 > 0) ? 2 : 1;
 
     for (let i = 0; i < 53 * 7; i++) {
-        const dateStr = getLogicalDateStr(dayIterator);
+        const dateStr = getLiteralDateStr(dayIterator);
         const count = data[dateStr] || 0;
         
         // Look ahead for "1-day gap" detection
         const nextDate = new Date(dayIterator.getTime() + 24 * 60 * 60 * 1000);
-        const nextCount = data[getLogicalDateStr(nextDate)] || 0;
+        const nextCount = data[getLiteralDateStr(nextDate)] || 0;
         
         const isPast = (dateStr < logicalToday);
         const isBreak = count === 0 && streakCount >= 1 && nextCount > 0 && isPast;
@@ -392,7 +399,7 @@ const SubmissionHeatmap = ({ data }) => {
         const days = [];
         for (let d = 1; d <= daysInMonth; d++) {
             const dateObj = new Date(year, month, d);
-            const dateStr = getLogicalDateStr(dateObj);
+            const dateStr = getLiteralDateStr(dateObj);
             const dayInfo = daysData[dateStr] || { count: 0, isBreak: false };
             days.push({
                 date: dateStr,

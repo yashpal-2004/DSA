@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Target, Trophy, Search, Play, CheckCircle, 
-    ExternalLink, RotateCcw, Award, Calendar, List, 
+    ExternalLink, RotateCcw, Award, Calendar, List, History, ChevronDown,
     X, Sparkles, Film, ArrowLeft, Check, Flame,
     ArrowRight, Bookmark, Zap, Cpu, Crown
 } from 'lucide-react';
@@ -148,18 +148,43 @@ const ProgressCircle = ({ pct }) => {
     );
 };
 
+// Module-level cache to eliminate network load latency when switching tabs
+let cachedCompletedMap = null;
+let cachedLcSolvedMap = null;
+let cachedSubmissionsList = null;
+
 // ---- A2Z DSA Tracker Page ----
 const A2ZDsaSheet = () => {
-    const [completedMap, setCompletedMap] = useState({});
-    const [lcSolvedMap, setLcSolvedMap] = useState({});
-    const [submissionsList, setSubmissionsList] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [completedMap, setCompletedMap] = useState(cachedCompletedMap || {});
+    const [lcSolvedMap, setLcSolvedMap] = useState(cachedLcSolvedMap || {});
+    const [submissionsList, setSubmissionsList] = useState(cachedSubmissionsList || []);
+    const [loading, setLoading] = useState(!cachedCompletedMap);
     
     const [activeTab, setActiveTab] = useState('checklist'); // 'checklist', 'heatmap'
     const [activeCategory, setActiveCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('all'); // 'all', 'completed', 'incomplete', 'leetcode-solved', 'leetcode-unsolved'
     const [activeVideo, setActiveVideo] = useState(null);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+    const filterOptions = [
+        { value: 'all', label: 'All Progress' },
+        { value: 'completed', label: 'Completed Only' },
+        { value: 'incomplete', label: 'Incomplete Only' },
+        { value: 'leetcode-solved', label: 'LeetCode Solved' },
+        { value: 'leetcode-unsolved', label: 'LeetCode Unsolved' }
+    ];
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     // Sync state if user exits fullscreen manually (e.g. Esc key)
     useEffect(() => {
@@ -240,6 +265,10 @@ const A2ZDsaSheet = () => {
                         }).catch(err => console.error("Auto-migration save failed:", err));
                     }
                     
+                    cachedCompletedMap = completed;
+                    cachedLcSolvedMap = lcSolved;
+                    cachedSubmissionsList = submissions;
+
                     setCompletedMap(completed);
                     setLcSolvedMap(lcSolved);
                     setSubmissionsList(submissions);
@@ -255,6 +284,10 @@ const A2ZDsaSheet = () => {
 
     // Helper to persist changes
     const saveProgress = async (newCompleted, newLc, newSubmissions) => {
+        cachedCompletedMap = newCompleted;
+        cachedLcSolvedMap = newLc;
+        cachedSubmissionsList = newSubmissions;
+
         try {
             const docRef = doc(a2zDb, 'users', userId);
             await setDoc(docRef, {
@@ -472,6 +505,37 @@ const A2ZDsaSheet = () => {
         };
     }, [submissionsList]);
 
+    const formatSubmissionTime = (timestamp) => {
+        const date = new Date(timestamp);
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    };
+
+    const formatSubmissionDate = (timestamp) => {
+        const date = new Date(timestamp);
+        return date.toLocaleDateString([], { year: 'numeric', month: 'long', day: 'numeric' });
+    };
+
+    const groupedLogs = useMemo(() => {
+        const groups = {};
+        const sorted = [...(submissionsList || [])].sort((a, b) => b.timestamp - a.timestamp);
+        
+        sorted.forEach(sub => {
+            if (!sub.timestamp) return;
+            const dateStr = formatSubmissionDate(sub.timestamp);
+            if (!groups[dateStr]) {
+                groups[dateStr] = {
+                    dateStr,
+                    timestamp: sub.timestamp,
+                    submissions: []
+                };
+            }
+            groups[dateStr].submissions.push(sub);
+        });
+
+        return Object.values(groups).sort((a, b) => b.timestamp - a.timestamp);
+    }, [submissionsList]);
+
+
     const heatmapMonths = useMemo(() => {
         const data = {};
         (submissionsList || []).forEach(sub => {
@@ -674,6 +738,10 @@ const A2ZDsaSheet = () => {
                             <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', marginTop: '0.25rem' }}>Completed</div>
                         </div>
                         <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '12px', border: '1px solid #f1f5f9', textAlign: 'center' }}>
+                            <div style={{ fontSize: '1.5rem', fontWeight: 900, color: '#ea580c' }}>{remainingVideosCount}</div>
+                            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', marginTop: '0.25rem' }}>Videos Left</div>
+                        </div>
+                        <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '12px', border: '1px solid #f1f5f9', textAlign: 'center' }}>
                             <div style={{ fontSize: '1.5rem', fontWeight: 900, color: '#2563eb' }}>{formatDurationSummary(totalDuration)}</div>
                             <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', marginTop: '0.25rem' }}>Total Hours</div>
                         </div>
@@ -753,22 +821,104 @@ const A2ZDsaSheet = () => {
                             />
                         </div>
 
-                        {/* Status Filter */}
-                        <select 
-                            value={statusFilter}
-                            onChange={(e) => setStatusFilter(e.target.value)}
-                            style={{
-                                padding: '0.75rem 1.5rem', border: '1px solid #e2e8f0',
-                                borderRadius: '0.75rem', background: 'white', fontWeight: 700,
-                                color: '#64748b', fontSize: '0.95rem', cursor: 'pointer'
-                            }}
-                        >
-                            <option value="all">All Progress</option>
-                            <option value="completed">Completed Only</option>
-                            <option value="incomplete">Incomplete Only</option>
-                            <option value="leetcode-solved">LeetCode Solved</option>
-                            <option value="leetcode-unsolved">LeetCode Unsolved</option>
-                        </select>
+                        {/* Status Filter Custom Dropdown */}
+                        <div ref={dropdownRef} style={{ position: 'relative', width: '220px', userSelect: 'none' }}>
+                            <div 
+                                onClick={() => setDropdownOpen(!dropdownOpen)}
+                                style={{
+                                    padding: '0.75rem 1.25rem',
+                                    border: '1px solid #e2e8f0',
+                                    borderRadius: '0.75rem',
+                                    background: 'white',
+                                    fontWeight: 700,
+                                    color: '#475569',
+                                    fontSize: '0.95rem',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    transition: 'all 0.2s',
+                                    boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.borderColor = '#cbd5e1';
+                                    e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.04)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.borderColor = '#e2e8f0';
+                                    e.currentTarget.style.boxShadow = '0 1px 2px rgba(0,0,0,0.02)';
+                                }}
+                            >
+                                <span>{filterOptions.find(o => o.value === statusFilter)?.label}</span>
+                                <motion.div
+                                    animate={{ rotate: dropdownOpen ? 180 : 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    style={{ display: 'inline-flex', alignItems: 'center', color: '#64748b' }}
+                                >
+                                    <ChevronDown size={16} />
+                                </motion.div>
+                            </div>
+
+                            <AnimatePresence>
+                                {dropdownOpen && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: 10 }}
+                                        transition={{ duration: 0.15 }}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '105%',
+                                            left: 0,
+                                            width: '100%',
+                                            background: 'white',
+                                            border: '1px solid #e2e8f0',
+                                            borderRadius: '0.75rem',
+                                            boxShadow: '0 10px 25px rgba(0,0,0,0.08)',
+                                            zIndex: 50,
+                                            overflow: 'hidden',
+                                            padding: '0.35rem 0'
+                                        }}
+                                    >
+                                        {filterOptions.map(option => {
+                                            const isSelected = option.value === statusFilter;
+                                            return (
+                                                <div
+                                                    key={option.value}
+                                                    onClick={() => {
+                                                        setStatusFilter(option.value);
+                                                        setDropdownOpen(false);
+                                                    }}
+                                                    style={{
+                                                        padding: '0.65rem 1rem',
+                                                        fontSize: '0.9rem',
+                                                        fontWeight: isSelected ? 800 : 600,
+                                                        color: isSelected ? '#2563eb' : '#475569',
+                                                        background: isSelected ? '#eff6ff' : 'transparent',
+                                                        cursor: 'pointer',
+                                                        transition: 'all 0.15s'
+                                                    }}
+                                                    onMouseEnter={(e) => {
+                                                        if (!isSelected) {
+                                                            e.currentTarget.style.background = '#f8fafc';
+                                                            e.currentTarget.style.color = '#1e293b';
+                                                        }
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        if (!isSelected) {
+                                                            e.currentTarget.style.background = 'transparent';
+                                                            e.currentTarget.style.color = '#475569';
+                                                        }
+                                                    }}
+                                                >
+                                                    {option.label}
+                                                </div>
+                                            );
+                                        })}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
 
                         {/* Reset Button */}
                         <button 
@@ -1126,81 +1276,151 @@ const A2ZDsaSheet = () => {
 
             {/* Heatmap View */}
             {activeTab === 'heatmap' && (
-                <div className="glass-card" style={{ padding: '2rem', background: 'white', borderRadius: '1.25rem', boxShadow: '0 10px 30px rgba(0,0,0,0.02)', overflowX: 'auto' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', minWidth: '800px', borderBottom: '1px solid #f1f5f9', paddingBottom: '1rem' }}>
-                        <div style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-main)' }}>
-                            {activityStats.totalSubmissions} <span style={{ color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.9rem' }}>submissions in the past one year</span>
-                        </div>
-                        <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>
-                            <span>Total active days: {activityStats.activeDaysCount}</span>
-                            <span style={{ color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                                <Flame size={15} fill="#f59e0b" /> Current: {activityStats.currentStreak}
-                            </span>
-                            <span>Max streak: {activityStats.maxStreak}</span>
-                        </div>
-                    </div>
-
-                    {/* Rendering pure CSS Grid heatmap grid like ActivityTracker.jsx */}
-                    <div style={{ display: 'flex', gap: '16px', overflowX: 'auto', paddingBottom: '1rem', minWidth: '900px' }}>
-                        {/* Day labels column */}
-                        <div style={{ display: 'flex', flexDirection: 'column', paddingRight: '10px', width: '25px', height: '88px', fontSize: '0.65rem', color: 'var(--text-muted)', position: 'relative', flexShrink: 0 }}>
-                            <div style={{ position: 'absolute', top: '13px' }}>Mon</div>
-                            <div style={{ position: 'absolute', top: '39px' }}>Wed</div>
-                            <div style={{ position: 'absolute', top: '65px' }}>Fri</div>
+                <>
+                    <div className="glass-card" style={{ padding: '2rem', background: 'white', borderRadius: '1.25rem', boxShadow: '0 10px 30px rgba(0,0,0,0.02)', overflowX: 'auto', marginBottom: '2.5rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', minWidth: '800px', borderBottom: '1px solid #f1f5f9', paddingBottom: '1rem' }}>
+                            <div style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-main)' }}>
+                                {activityStats.totalSubmissions} <span style={{ color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.9rem' }}>submissions in the past one year</span>
+                            </div>
+                            <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>
+                                <span>Total active days: {activityStats.activeDaysCount}</span>
+                                <span style={{ color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                                    <Flame size={15} fill="#f59e0b" /> Current: {activityStats.currentStreak}
+                                </span>
+                                <span>Max streak: {activityStats.maxStreak}</span>
+                            </div>
                         </div>
 
-                        {/* Month grids */}
-                        <div style={{ display: 'flex', gap: '16px' }}>
-                            {heatmapMonths.map((month) => (
-                                <div key={`${month.name}-${month.year}`} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    {/* Grid of columns for this month */}
-                                    <div style={{ display: 'flex', gap: '3px' }}>
-                                        {month.weeks.map((week, wIdx) => (
-                                            <div key={wIdx} style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                                                {week.map((day, dIdx) => {
-                                                    if (!day) {
+                        {/* Rendering pure CSS Grid heatmap grid like ActivityTracker.jsx */}
+                        <div style={{ display: 'flex', gap: '16px', overflowX: 'auto', paddingBottom: '1rem', minWidth: '900px' }}>
+                            {/* Day labels column */}
+                            <div style={{ display: 'flex', flexDirection: 'column', paddingRight: '10px', width: '25px', height: '88px', fontSize: '0.65rem', color: 'var(--text-muted)', position: 'relative', flexShrink: 0 }}>
+                                <div style={{ position: 'absolute', top: '13px' }}>Mon</div>
+                                <div style={{ position: 'absolute', top: '39px' }}>Wed</div>
+                                <div style={{ position: 'absolute', top: '65px' }}>Fri</div>
+                            </div>
+
+                            {/* Month grids */}
+                            <div style={{ display: 'flex', gap: '16px' }}>
+                                {heatmapMonths.map((month) => (
+                                    <div key={`${month.name}-${month.year}`} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                        {/* Grid of columns for this month */}
+                                        <div style={{ display: 'flex', gap: '3px' }}>
+                                            {month.weeks.map((week, wIdx) => (
+                                                <div key={wIdx} style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                                                    {week.map((day, dIdx) => {
+                                                        if (!day) {
+                                                            return (
+                                                                <div 
+                                                                    key={dIdx} 
+                                                                    style={{ width: '10px', height: '10px', background: 'transparent' }} 
+                                                                />
+                                                            );
+                                                        }
                                                         return (
                                                             <div 
-                                                                key={dIdx} 
-                                                                style={{ width: '10px', height: '10px', background: 'transparent' }} 
+                                                                key={dIdx}
+                                                                style={{ 
+                                                                    width: '10px', 
+                                                                    height: '10px', 
+                                                                    background: getHeatColor(day.count), 
+                                                                    borderRadius: '2px'
+                                                                }}
+                                                                title={`${day.date}: ${day.count} videos completed`}
                                                             />
                                                         );
-                                                    }
-                                                    return (
-                                                        <div 
-                                                            key={dIdx}
-                                                            style={{ 
-                                                                width: '10px', 
-                                                                height: '10px', 
-                                                                background: getHeatColor(day.count), 
-                                                                borderRadius: '2px'
-                                                            }}
-                                                            title={`${day.date}: ${day.count} videos completed`}
-                                                        />
-                                                    );
-                                                })}
-                                            </div>
-                                        ))}
+                                                    })}
+                                                </div>
+                                            ))}
+                                        </div>
+                                        
+                                        {/* Month label centered */}
+                                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textAlign: 'center' }}>
+                                            {month.name}
+                                        </div>
                                     </div>
-                                    
-                                    {/* Month label centered */}
-                                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textAlign: 'center' }}>
-                                        {month.name}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
 
-                        {/* Legend */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: 'auto', marginBottom: '0.5rem', marginLeft: '2rem', flexShrink: 0 }}>
-                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Less</span>
-                            {[0, 1, 2, 4, 6].map(level => (
-                                <div key={level} style={{ width: '10px', height: '10px', borderRadius: '2px', background: getHeatColor(level) }}></div>
-                            ))}
-                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>More</span>
+                            {/* Legend */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: 'auto', marginBottom: '0.5rem', marginLeft: '2rem', flexShrink: 0 }}>
+                                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Less</span>
+                                {[0, 1, 2, 4, 6].map(level => (
+                                    <div key={level} style={{ width: '10px', height: '10px', borderRadius: '2px', background: getHeatColor(level) }}></div>
+                                ))}
+                                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>More</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+
+                    {/* Timeline Logs */}
+                    <div style={{ position: 'relative', paddingLeft: '2rem', marginTop: '1rem' }}>
+                        {/* Vertical Timeline Bar */}
+                        <div style={{ position: 'absolute', left: '7px', top: '10px', bottom: '0', width: '2px', background: 'linear-gradient(to bottom, var(--primary), var(--bg-dark) 80%)', borderRadius: '4px' }}></div>
+
+                        {groupedLogs.length === 0 ? (
+                            <div className="glass-card" style={{ padding: '4rem 2rem', textAlign: 'center', background: 'white' }}>
+                                <History size={60} style={{ opacity: 0.1, marginBottom: '1.5rem' }} />
+                                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)' }}>No Submissions Yet</h3>
+                                <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>Mark your first video completed to start the logs!</p>
+                            </div>
+                        ) : (
+                            groupedLogs.map((group, idx) => (
+                                <div key={group.dateStr} style={{ marginBottom: '3rem', position: 'relative' }}>
+                                    {/* Circle Bullet */}
+                                    <div style={{
+                                        position: 'absolute',
+                                        left: '-23px',
+                                        top: '8px',
+                                        width: '16px',
+                                        height: '16px',
+                                        borderRadius: '50%',
+                                        background: 'white',
+                                        border: `3px solid ${idx === 0 ? 'var(--primary)' : 'var(--border)'}`,
+                                        zIndex: 1,
+                                        boxShadow: idx === 0 ? '0 0 15px rgba(59, 130, 246, 0.2)' : 'none'
+                                    }}></div>
+
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                            <span style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)' }}>{group.dateStr}</span>
+                                            <div style={{ padding: '4px 12px', background: '#eff6ff', color: '#3b82f6', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 800, border: '1px solid #dbeafe' }}>
+                                                {group.submissions.length} Video{group.submissions.length !== 1 ? 's' : ''} Completed
+                                            </div>
+                                        </div>
+
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1rem' }}>
+                                            {group.submissions.map((sub, i) => (
+                                                <div
+                                                    key={`${sub.videoId}-${i}`}
+                                                    className="glass-card"
+                                                    style={{ padding: '1rem 1.25rem', borderLeft: '4px solid #3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', background: 'white' }}
+                                                >
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', minWidth: 0 }}>
+                                                        <div style={{ padding: '6px', background: '#eff6ff', borderRadius: '8px', color: '#3b82f6', flexShrink: 0 }}>
+                                                            <Check size={16} strokeWidth={3} />
+                                                        </div>
+                                                        <div style={{ minWidth: 0 }}>
+                                                            <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={sub.title}>{sub.title}</div>
+                                                            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>
+                                                                {getCategory(sub.title)}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
+                                                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 700 }}>
+                                                            {formatSubmissionTime(sub.timestamp)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </>
             )}
 
         </div>
