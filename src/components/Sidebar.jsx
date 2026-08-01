@@ -15,7 +15,8 @@ import {
     ZoomOut,
     RotateCcw,
     Zap,
-    List
+    List,
+    BookOpen
 } from 'lucide-react';
 
 const Sidebar = ({ zoomLevel, setZoomLevel }) => {
@@ -27,6 +28,7 @@ const Sidebar = ({ zoomLevel, setZoomLevel }) => {
         { to: "/plan", icon: <TrendingUp size={22} />, label: "Study Plan" },
         { to: "/leetcode", icon: <List size={22} />, label: "LeetCode Sheet" },
         { to: "/hot150", icon: <Zap size={22} />, label: "Hot 150+" },
+        { to: "/a2z-dsa", icon: <BookOpen size={22} />, label: "A2Z DSA" },
         { to: "/gfg", icon: <Trophy size={22} />, label: "Love Babbar" },
         { to: "/bookmarks", icon: <Bookmark size={22} />, label: "Bookmarks" },
     ];

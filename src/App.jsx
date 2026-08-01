@@ -19,6 +19,7 @@ import LeetCodeSheet from './components/LeetCodeSheet';
 import Hot150Sheet from './components/Hot150Sheet';
 import TargetWidget from './components/TargetWidget';
 import StudyPlan from './components/StudyPlan';
+import A2ZDsaSheet from './components/A2ZDsaSheet';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -357,7 +358,8 @@ function App() {
             marginLeft: '280px',
             position: 'relative',
             padding: '1rem',
-            minHeight: '100%'
+            minHeight: '100%',
+            minWidth: 0
           }}>
             <TargetWidget topics={topics} />
             <Routes>
@@ -372,6 +374,7 @@ function App() {
               <Route path="/plan" element={<ErrorBoundary><StudyPlan topics={topics} /></ErrorBoundary>} />
               <Route path="/leetcode" element={<ErrorBoundary><LeetCodeSheet topics={topics.filter(t => !t.id.startsWith('babbar') && t.id !== 'leetcode-top-150-plus')} searchTerm={searchTerm} searchMode={searchMode} onToggleSolved={handleToggleSolved} onToggleBookmark={handleToggleBookmark} onSaveComment={handleSaveComment} /></ErrorBoundary>} />
               <Route path="/hot150" element={<ErrorBoundary><Hot150Sheet topics={topics} searchTerm={searchTerm} searchMode={searchMode} onToggleSolved={handleToggleSolved} onToggleBookmark={handleToggleBookmark} onSaveComment={handleSaveComment} onAddQuestion={handleAddQuestion} /></ErrorBoundary>} />
+              <Route path="/a2z-dsa" element={<ErrorBoundary><A2ZDsaSheet /></ErrorBoundary>} />
             </Routes>
           </main>
         </div>

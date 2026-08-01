@@ -327,35 +327,33 @@ const DifficultyRow = ({ label, solved, total, color }) => (
 
 const getHeatColor = (count, isBreak) => {
     if (isBreak) return '#fca5a5'; // More visible red for streak break
-    if (count === 0) return '#f8fafc';
-    if (count <= 1) return '#86efac'; 
-    if (count <= 3) return '#22c55e';
-    if (count <= 5) return '#16a34a';
-    return '#15803d';
+    if (count === 0) return '#ebedf0';
+    if (count <= 1) return '#9be9a8'; 
+    if (count <= 3) return '#40c463';
+    if (count <= 5) return '#30a14e';
+    return '#216e39';
 };
 
 const SubmissionHeatmap = ({ data }) => {
     const today = new Date();
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    
-    const weeks = [];
-    let currentWeek = [];
+    const logicalToday = getLogicalDateStr(new Date());
+
+    // 1. First pass: Chronologically calculate count and isBreak for the past year
+    const daysData = {};
     const startDate = new Date();
     startDate.setDate(today.getDate() - (52 * 7 + today.getDay())); 
 
     const dayIterator = new Date(startDate);
-    const logicalToday = getLogicalDateStr(new Date());
 
-    // Calculate initial streak from before the visible range
+    // Calculate initial streak from before the range
     const initialPrevDate = new Date(startDate);
     initialPrevDate.setDate(initialPrevDate.getDate() - 1);
     let streakCount = 0;
-    // We'd need to look back multiple days to be perfect, but 2 is enough for lookback
     const p1 = data[getLogicalDateStr(initialPrevDate)] || 0;
     const p2Date = new Date(initialPrevDate); p2Date.setDate(p2Date.getDate() - 1);
     const p2 = data[getLogicalDateStr(p2Date)] || 0;
     if (p1 > 0) streakCount = (p2 > 0) ? 2 : 1;
-    
+
     for (let i = 0; i < 53 * 7; i++) {
         const dateStr = getLogicalDateStr(dayIterator);
         const count = data[dateStr] || 0;
@@ -365,14 +363,9 @@ const SubmissionHeatmap = ({ data }) => {
         const nextCount = data[getLogicalDateStr(nextDate)] || 0;
         
         const isPast = (dateStr < logicalToday);
-        // Any 1-day gap (next day has activity) should be red
         const isBreak = count === 0 && streakCount >= 1 && nextCount > 0 && isPast;
 
-        currentWeek.push({ date: dateStr, count, day: dayIterator.getDay(), isBreak });
-        if (currentWeek.length === 7) {
-            weeks.push(currentWeek);
-            currentWeek = [];
-        }
+        daysData[dateStr] = { count, isBreak };
 
         if (count > 0) {
             streakCount++;
@@ -382,49 +375,105 @@ const SubmissionHeatmap = ({ data }) => {
         dayIterator.setDate(dayIterator.getDate() + 1);
     }
 
+    // 2. Second pass: Group days by calendar month
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const months = [];
+    const currentYear = today.getFullYear();
+    const currentMonthIndex = today.getMonth();
+
+    for (let mOffset = -12; mOffset <= 0; mOffset++) {
+        const targetDate = new Date(currentYear, currentMonthIndex + mOffset, 1);
+        const year = targetDate.getFullYear();
+        const month = targetDate.getMonth();
+        
+        const isCurrentMonth = (year === today.getFullYear() && month === today.getMonth());
+        const daysInMonth = isCurrentMonth ? today.getDate() : new Date(year, month + 1, 0).getDate();
+        
+        const days = [];
+        for (let d = 1; d <= daysInMonth; d++) {
+            const dateObj = new Date(year, month, d);
+            const dateStr = getLogicalDateStr(dateObj);
+            const dayInfo = daysData[dateStr] || { count: 0, isBreak: false };
+            days.push({
+                date: dateStr,
+                dayOfWeek: dateObj.getDay(),
+                count: dayInfo.count,
+                isBreak: dayInfo.isBreak
+            });
+        }
+
+        const weeks = [];
+        let currentWeek = Array(7).fill(null);
+
+        days.forEach(day => {
+            currentWeek[day.dayOfWeek] = day;
+            if (day.dayOfWeek === 6) {
+                weeks.push(currentWeek);
+                currentWeek = Array(7).fill(null);
+            }
+        });
+
+        if (currentWeek.some(d => d !== null)) {
+            weeks.push(currentWeek);
+        }
+
+        months.push({
+            name: monthNames[month],
+            year: year,
+            weeks: weeks
+        });
+    }
+
     return (
-        <div style={{ overflowX: 'auto', paddingBottom: '0.5rem' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', minWidth: '750px' }}>
-                <div style={{ display: 'flex', marginBottom: '8px', paddingLeft: '35px' }}>
-                    {weeks.map((week, i) => {
-                        const firstDay = new Date(week[0].date);
-                        if (i > 0 && firstDay.getDate() <= 7) {
-                            return <div key={i} style={{ minWidth: '13px', fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600 }}>{months[firstDay.getMonth()]}</div>
-                        }
-                        return <div key={i} style={{ minWidth: '13px' }}></div>
-                    })}
+        <div style={{ overflowX: 'auto', paddingBottom: '1rem' }}>
+            <div style={{ display: 'flex', gap: '16px', minWidth: '900px' }}>
+                {/* Day labels column */}
+                <div style={{ display: 'flex', flexDirection: 'column', paddingRight: '10px', width: '25px', height: '88px', fontSize: '0.65rem', color: 'var(--text-muted)', position: 'relative', flexShrink: 0 }}>
+                    <div style={{ position: 'absolute', top: '13px' }}>Mon</div>
+                    <div style={{ position: 'absolute', top: '39px' }}>Wed</div>
+                    <div style={{ position: 'absolute', top: '65px' }}>Fri</div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '4px' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingRight: '10px', width: '25px' }}>
-                        <div style={{ height: '10px' }}></div>
-                        <div style={{ height: '10px', fontSize: '0.65rem', color: 'var(--text-muted)' }}>Mon</div>
-                        <div style={{ height: '10px' }}></div>
-                        <div style={{ height: '10px', fontSize: '0.65rem', color: 'var(--text-muted)' }}>Wed</div>
-                        <div style={{ height: '10px' }}></div>
-                        <div style={{ height: '10px', fontSize: '0.65rem', color: 'var(--text-muted)' }}>Fri</div>
-                        <div style={{ height: '10px' }}></div>
-                    </div>
-
-                    <div style={{ display: 'flex', gap: '3px' }}>
-                        {weeks.map((week, wIdx) => (
-                            <div key={wIdx} style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                                {week.map((day, dIdx) => (
-                                    <div 
-                                        key={dIdx}
-                                        style={{ 
-                                            width: '10px', 
-                                            height: '10px', 
-                                            background: getHeatColor(day.count, day.isBreak), 
-                                            borderRadius: '2px',
-                                            border: (day.count === 0 && !day.isBreak) ? '1px solid #e2e8f0' : 'none'
-                                        }}
-                                        title={`${day.date}: ${day.count} submissions ${day.isBreak ? '(Streak Break)' : ''}`}
-                                    />
+                {/* Month grids */}
+                <div style={{ display: 'flex', gap: '16px' }}>
+                    {months.map((month) => (
+                        <div key={`${month.name}-${month.year}`} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            {/* Grid of columns for this month */}
+                            <div style={{ display: 'flex', gap: '3px' }}>
+                                {month.weeks.map((week, wIdx) => (
+                                    <div key={wIdx} style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                                        {week.map((day, dIdx) => {
+                                            if (!day) {
+                                                return (
+                                                    <div 
+                                                        key={dIdx} 
+                                                        style={{ width: '10px', height: '10px', background: 'transparent' }} 
+                                                    />
+                                                );
+                                            }
+                                            return (
+                                                <div 
+                                                    key={dIdx}
+                                                    style={{ 
+                                                        width: '10px', 
+                                                        height: '10px', 
+                                                        background: getHeatColor(day.count, day.isBreak), 
+                                                        borderRadius: '2px'
+                                                    }}
+                                                    title={`${day.date}: ${day.count} submissions ${day.isBreak ? '(Streak Break)' : ''}`}
+                                                />
+                                            );
+                                        })}
+                                    </div>
                                 ))}
                             </div>
-                        ))}
-                    </div>
+                            
+                            {/* Month label centered */}
+                            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600, textAlign: 'center' }}>
+                                {month.name}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
